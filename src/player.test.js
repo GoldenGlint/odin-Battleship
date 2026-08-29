@@ -57,3 +57,21 @@ test("player attack rejects duplicate coordinates", () => {
         [0, 0]
     ]);
 });
+
+test("player can place a ship", () => {
+    testPlayer.placeShip(3, [
+        [0, 0],
+        [0, 1],
+        [0, 2]
+    ]);
+
+    expect(testPlayer.gameboard.ships.length).toBe(1);
+
+    expect(testPlayer.gameboard.ships[0].coords).toEqual([
+        [0, 0],
+        [0, 1],
+        [0, 2]
+    ]);
+
+    expect(testPlayer.gameboard.ships[0].length).toBe(3);
+});

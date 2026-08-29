@@ -4,8 +4,7 @@ export class Player{
     name="Player";
     #gameboard=new gameBoard();
     #id=crypto.randomUUID();
-    #win=false;
-    #type="CPU"
+    #type="HUMAN"
     constructor(name, type){
         this.name=name;
         this.#type=type;
@@ -13,14 +12,14 @@ export class Player{
     attack(enemyBoard, pair){
         return enemyBoard.receiveAttack(pair);
     }
+    placeShip(length, coords){
+        return this.gameboard.addShip(length, coords);
+    }
     get type(){
         return this.#type;
     }
     get id(){
         return this.#id;
-    }
-    get win(){
-        return this.#win;
     }
     get gameboard(){
         return this.#gameboard;
