@@ -1,6 +1,6 @@
 import {ship} from "./ship"
 
-class gameBoard{
+export class gameBoard{
     #ships=[];
     #miss=[];
     #hit=[];
