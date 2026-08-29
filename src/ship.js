@@ -18,8 +18,10 @@ export class ship{
                 this.#hitCount++;
                 this.#hitCoords.push(pair);
                 this.checkSunk();
+                return true;
             }
         }
+        return false;
     }
     checkSunk(){
         if(this.#coords.length==this.#hitCoords.length){
