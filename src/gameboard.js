@@ -95,6 +95,9 @@ export class gameBoard{
     get allSunk(){
         return this.#allSunk;
     }
+    get sunkNumber() {
+        return this.#ships.filter(ship => ship.sunk).length;
+    }
 
 }
 
