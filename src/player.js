@@ -1,7 +1,7 @@
 import { gameBoard } from "./gameboard";
 
 export class Player{
-    name="Player";
+    #name="Player";
     #gameboard=new gameBoard();
     #id=crypto.randomUUID();
     #type="HUMAN"
@@ -25,7 +25,10 @@ export class Player{
         return this.#gameboard;
     }
     get name(){
-        return this.name;
+        return this.#name;
+    }
+    set name(name){
+        this.#name=name;
     }
 
 }

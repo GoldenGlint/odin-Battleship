@@ -6,17 +6,48 @@ export function ScreenController(game){
     const p2Grid = document.querySelector("#p2Grid");
 
     function handleAttack(coords) {
-        game.playTurn(coords);
+        const valid = game.playTurn(coords);
+        if(!valid){
+            return;
+        }
         renderAll();
     }
 
     function renderAll(){
+        if (game.gameOver) {
+
+            render.renderWinner(
+                game.winner.name
+            );
+
+            // Show both boards, neither clickable
+            render.renderBoard(
+                game.player1.gameboard,
+                p1Grid,
+                true,
+                false,
+                handleAttack
+            );
+
+            render.renderBoard(
+                game.player2.gameboard,
+                p2Grid,
+                true,
+                false,
+                handleAttack
+            );
+
+            return;
+        }
+
+        render.renderTurn(game.activePlayer.name);
+
         render.renderHeader(
-            p1Header, game.player1.name, game.player1.gameBoard.sunkNumber
+            p1Header, game.player1.name, game.player1.gameboard.sunkNumber
         );
 
         render.renderHeader(
-            p2Header, game.player2.name, game.player2.gameBoard.sunkNumber
+            p2Header, game.player2.name, game.player2.gameboard.sunkNumber
         );
 
         if(game.activePlayer==game.player1){

@@ -3,7 +3,7 @@ import { gameController } from "./gamecontroller.js";
 let game;
 
 beforeEach(() => {
-    game = new gameController("Player 1", "Player 2");
+    game = new gameController("Player 1", "Player 2", "HUMAN", "HUMAN");
 });
 
 test("game initializes correctly", () => {

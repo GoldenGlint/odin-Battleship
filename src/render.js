@@ -46,6 +46,18 @@ export const render={
         headerElement.appendChild(sunk);
 
     },
+    renderTurn(playerName) {
+        const title = document.querySelector(".title h1");
+
+        title.textContent = `BattleShip - ${playerName}'s Turn`;
+    },
+
+
+    renderWinner(playerName) {
+        const title = document.querySelector(".title h1");
+
+        title.textContent = `${playerName} Wins!`;
+    }
 
 
 }
