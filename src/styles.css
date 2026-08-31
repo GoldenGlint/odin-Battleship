@@ -60,13 +60,11 @@ body {
     font-size: 18px;
 }
 
-#p1Name,
-#p2Name {
+.headerName {
     color: #ffffff;
 }
 
-#p1Sunk,
-#p2Sunk {
+.sunkPlayer {
     color: #facc15;
 }
 
