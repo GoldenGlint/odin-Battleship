@@ -1,3 +1,126 @@
-body{
-    background-color: blue;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #0f4c75
+    );
+    color: white;
+}
+
+.title {
+    text-align: center;
+    padding: 30px 20px 10px;
+}
+
+.title h1 {
+    margin: 0;
+    font-size: 42px;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+#boards {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+.playerContainer {
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 25px;
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3);
+
+    backdrop-filter: blur(6px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+    gap: 30px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#p1Name,
+#p2Name {
+    color: #ffffff;
+}
+
+#p1Sunk,
+#p2Sunk {
+    color: #facc15;
+}
+
+.grid {
+    display: grid;
+
+    grid-template-columns: repeat(10, 36px);
+    grid-template-rows: repeat(10, 36px);
+
+    border: 3px solid #38bdf8;
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 0 20px rgba(56, 189, 248, 0.3);
+}
+
+.cell {
+    width: 36px;
+    height: 36px;
+
+    background-color: #0ea5e9;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.cell:hover {
+    background-color: #38bdf8;
+    cursor: pointer;
+
+    transform: scale(1.08);
+
+    z-index: 1;
+}
+
+/* You can use these later */
+
+.cell.ship {
+    background-color: #64748b;
+}
+
+.cell.hit {
+    background-color: #ef4444;
+}
+
+.cell.miss {
+    background-color: #e2e8f0;
+}
+
+.cell.sunk {
+    background-color: #7f1d1d;
 }
