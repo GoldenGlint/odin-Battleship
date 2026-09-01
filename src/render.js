@@ -1,4 +1,4 @@
-export const render={
+export const render={//test
     renderTitle(){
         const title = document.querySelector(".title");
         let text = document.createElement("h1");
