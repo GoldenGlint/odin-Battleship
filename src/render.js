@@ -53,10 +53,13 @@ export const render={//test
     },
 
 
-    renderWinner(playerName) {
-        const title = document.querySelector(".title h1");
+    renderWinner(winnerName) {
+        const winnerScreen = document.querySelector("#winners-screen");
+        const winnerMessage = document.querySelector(".winners-message");
 
-        title.textContent = `${playerName} Wins!`;
+        winnerMessage.textContent = `${winnerName} wins!`;
+
+        winnerScreen.showModal();
     }
 
 
