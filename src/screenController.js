@@ -46,45 +46,64 @@ export function ScreenController(){
         
     }
 
-    function setup(){
-        game.addShip(
-            game.player1,
-            5,
-            [[0,0], [0,1], [0,2], [0,3], [0,4]]
-        );
+    function setup() {
+    setupRandomShips(game.player1);
+    setupRandomShips(game.player2);
+}
 
-        game.addShip(
-            game.player1,
-            4,
-            [[2,0], [2,1], [2,2], [2,3]]
-        );
+    function setupRandomShips(player) {
+        const shipLengths = [5, 4, 3];
+        const occupied = new Set();
 
-        game.addShip(
-            game.player1,
-            3,
-            [[4,0], [4,1], [4,2]]
-        );
+        for (const length of shipLengths) {
+            let placed = false;
 
+            while (!placed) {
+                const horizontal = Math.random() < 0.5;
 
-        game.addShip(
-            game.player2,
-            5,
-            [[1,0], [1,1], [1,2], [1,3], [1,4]]
-        );
+                let row;
+                let col;
 
-        game.addShip(
-            game.player2,
-            4,
-            [[3,0], [3,1], [3,2], [3,3]]
-        );
+                if (horizontal) {
+                    row = Math.floor(Math.random() * 10);
+                    col = Math.floor(Math.random() * (11 - length));
+                } else {
+                    row = Math.floor(Math.random() * (11 - length));
+                    col = Math.floor(Math.random() * 10);
+                }
 
-        game.addShip(
-            game.player2,
-            3,
-            [[5,0], [5,1], [5,2]]
-        );
+                const coords = [];
+
+                for (let i = 0; i < length; i++) {
+                    if (horizontal) {
+                        coords.push([row, col + i]);
+                    } else {
+                        coords.push([row + i, col]);
+                    }
+                }
+
+                const overlaps = coords.some(([r, c]) =>
+                    occupied.has(`${r},${c}`)
+                );
+
+                if (overlaps) {
+                    continue;
+                }
+
+                game.addShip(
+                    player,
+                    length,
+                    coords
+                );
+
+                coords.forEach(([r, c]) => {
+                    occupied.add(`${r},${c}`);
+                });
+
+                placed = true;
+            }
+        }
     }
-
     
     function handleAttack(coords) {
         const valid = game.playTurn(coords);
