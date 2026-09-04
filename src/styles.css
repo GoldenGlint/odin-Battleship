@@ -14,6 +14,98 @@ body {
     color: white;
 }
 
+#initial-screen {
+    border: 2px solid #2563eb;
+    border-radius: 16px;
+
+    padding: 32px;
+    width: min(90%, 420px);
+
+    background: #eff6ff;
+    color: #0f172a;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+#initial-screen::backdrop {
+    background: rgba(15, 23, 42, 0.75);
+}
+
+#initial-screen h1 {
+    margin-top: 0;
+    margin-bottom: 24px;
+
+    text-align: center;
+    font-size: 1.8rem;
+
+    color: #1d4ed8;
+}
+
+#initial-screen label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-weight: bold;
+    color: #1e3a8a;
+}
+
+#initial-screen input,
+#initial-screen select {
+    width: 100%;
+
+    padding: 12px 14px;
+    margin-bottom: 14px;
+
+    border: 2px solid #bfdbfe;
+    border-radius: 8px;
+
+    background: white;
+    color: #0f172a;
+
+    font-size: 1rem;
+
+    box-sizing: border-box;
+}
+
+#initial-screen input:focus,
+#initial-screen select:focus {
+    outline: none;
+
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+#start-game {
+    width: 100%;
+
+    padding: 12px;
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #2563eb;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease,
+                transform 0.1s ease;
+}
+
+#start-game:hover {
+    background: #1d4ed8;
+}
+
+#start-game:active {
+    transform: scale(0.98);
+}
+
 .title {
     text-align: center;
     padding: 30px 20px 10px;
