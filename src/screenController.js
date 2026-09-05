@@ -4,6 +4,8 @@ import { gameController } from "./gamecontroller.js";
 export function ScreenController(){
 
     let game;
+    let cpuThinking = false;
+    const cpuShots = new Map();
 
     const p1Header = document.querySelector("#p1Header");
     const p2Header = document.querySelector("#p2Header");
@@ -265,6 +267,41 @@ export function ScreenController(){
             }
         }
     }
+
+    function playCpuTurn() {
+        if (game.gameOver) {
+            return;
+        }
+
+        const cpu = game.activePlayer;
+
+        if (cpu.type !== "CPU") {
+            return;
+        }
+
+        if (!cpuShots.has(cpu)) {
+            cpuShots.set(cpu, new Set());
+        }
+
+        const shots = cpuShots.get(cpu);
+
+        let row;
+        let col;
+        let key;
+
+        do {
+            row = Math.floor(Math.random() * 10);
+            col = Math.floor(Math.random() * 10);
+
+            key = `${row},${col}`;
+        } while (shots.has(key));
+
+        shots.add(key);
+
+        game.playTurn([row, col]);
+
+        renderAll();
+    }
     
     function handleAttack(coords) {
         const valid = game.playTurn(coords);
@@ -275,6 +312,7 @@ export function ScreenController(){
     }
 
     function renderAll(){
+        const isCpuTurn = game.activePlayer.type === "CPU";
         if (game.gameOver) {
 
             render.renderWinner(
@@ -311,13 +349,48 @@ export function ScreenController(){
             p2Header, game.player2.name, game.player2.gameboard.sunkNumber
         );
 
-        if(game.activePlayer==game.player1){
-            render.renderBoard(game.player1.gameboard, p1Grid, true, false, handleAttack);
-            render.renderBoard(game.player2.gameboard, p2Grid, false, true, handleAttack);
+        if (game.activePlayer === game.player1) {
+            render.renderBoard(
+                game.player1.gameboard,
+                p1Grid,
+                true,
+                false,
+                handleAttack
+            );
+
+            render.renderBoard(
+                game.player2.gameboard,
+                p2Grid,
+                false,
+                !isCpuTurn,
+                handleAttack
+            );
         }
-        else{
-            render.renderBoard(game.player1.gameboard, p1Grid, false, true, handleAttack);
-            render.renderBoard(game.player2.gameboard, p2Grid, true, false, handleAttack);
+        else {
+            render.renderBoard(
+                game.player1.gameboard,
+                p1Grid,
+                false,
+                !isCpuTurn,
+                handleAttack
+            );
+
+            render.renderBoard(
+                game.player2.gameboard,
+                p2Grid,
+                true,
+                false,
+                handleAttack
+            );
+        }
+
+        if (game.activePlayer.type === "CPU" && !cpuThinking) {
+            cpuThinking = true;
+
+            setTimeout(() => {
+                cpuThinking = false;
+                playCpuTurn();
+            }, 700);
         }
 
     }
