@@ -23,7 +23,7 @@ export function ScreenController(){
 
         startScreen.showModal();
 
-        startButton.addEventListener("click", ()=>{
+        startButton.addEventListener("click", async ()=>{
             const playerOneName=document.querySelector("#player-one-name").value||"Player One";
             const playerTwoName=document.querySelector("#player-two-name").value||"Player Two";
             const playerOneType = document.querySelector("#player-one-type").value||"HUMAN"; 
@@ -35,9 +35,10 @@ export function ScreenController(){
                 playerOneType,
                 playerTwoType
             )
-            setup();
 
             startScreen.close();
+
+            await setup();
 
             renderAll();
 
@@ -46,10 +47,170 @@ export function ScreenController(){
         
     }
 
-    function setup() {
-    setupRandomShips(game.player1);
-    setupRandomShips(game.player2);
-}
+    async function setup() {
+        if (game.player1.type === "CPU") {
+            setupRandomShips(game.player1);
+        } 
+        else{
+            await setupHumanShips(game.player1);
+        }
+
+        if (game.player2.type === "CPU") {
+            setupRandomShips(game.player2);
+        }
+        else{
+            await setupHumanShips(game.player2);
+        }
+    }
+
+    function setupHumanShips(player) {
+        return new Promise((resolve) => {
+
+            const shipLengths = [5, 4, 3];
+
+            let shipIndex = 0;
+            let horizontal = true;
+
+            const occupied = new Set();
+
+            const placementControls =
+                document.querySelector("#placement-controls");
+
+            const placementMessage =
+                document.querySelector("#placement-message");
+
+            const rotateButton =
+                document.querySelector("#rotate-ship");
+
+            const grid =
+                player === game.player1
+                    ? p1Grid
+                    : p2Grid;
+
+            const otherGrid =
+                player === game.player1
+                    ? p2Grid
+                    : p1Grid;
+
+            placementControls.hidden = false;
+
+            // Don't show the other player's board while placing
+            otherGrid.innerHTML = "";
+
+            function rotateShip() {
+                horizontal = !horizontal;
+                updateMessage();
+            }
+
+            rotateButton.addEventListener("click", rotateShip);
+
+            function updateMessage() {
+                const length = shipLengths[shipIndex];
+
+                placementMessage.textContent =
+                    `${player.name}: place your length ${length} ship — ` +
+                    `${horizontal ? "Horizontal" : "Vertical"}`;
+            }
+
+            function getCoordinates(start, length) {
+                const [row, col] = start;
+
+                const coords = [];
+
+                for (let i = 0; i < length; i++) {
+                    if (horizontal) {
+                        coords.push([row, col + i]);
+                    } else {
+                        coords.push([row + i, col]);
+                    }
+                }
+
+                return coords;
+            }
+
+            function validPlacement(coords) {
+                for (const [row, col] of coords) {
+
+                    // Outside the board
+                    if (
+                        row < 0 ||
+                        row >= 10 ||
+                        col < 0 ||
+                        col >= 10
+                    ) {
+                        return false;
+                    }
+
+                    // Overlaps another ship
+                    if (occupied.has(`${row},${col}`)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            function placeShip(startCoords) {
+                const length = shipLengths[shipIndex];
+
+                const coords =
+                    getCoordinates(startCoords, length);
+
+                if (!validPlacement(coords)) {
+                    placementMessage.textContent =
+                        "Invalid position. Try another square.";
+
+                    return;
+                }
+
+                game.addShip(
+                    player,
+                    length,
+                    coords
+                );
+
+                coords.forEach(([row, col]) => {
+                    occupied.add(`${row},${col}`);
+                });
+
+                shipIndex++;
+
+                // All ships placed
+                if (shipIndex === shipLengths.length) {
+                    rotateButton.removeEventListener(
+                        "click",
+                        rotateShip
+                    );
+
+                    placementControls.hidden = true;
+
+                    resolve();
+
+                    return;
+                }
+
+                updateMessage();
+
+                render.renderBoard(
+                    player.gameboard,
+                    grid,
+                    true,
+                    true,
+                    placeShip
+                );
+            }
+
+            updateMessage();
+
+            render.renderBoard(
+                player.gameboard,
+                grid,
+                true,
+                true,
+                placeShip
+            );
+        });
+    }
 
     function setupRandomShips(player) {
         const shipLengths = [5, 4, 3];
